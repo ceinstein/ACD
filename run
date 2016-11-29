@@ -1,0 +1,4 @@
+echo $1
+echo $2
+
+python ./src/generation.py ./Logs/$1.log ./Matricies/$1.matrix && go run ./src/GDACD.go ./Matricies/$1.matrix ./Clusters/$1.clstrs $2 && python ./src/topics.py ./Logs/$1.log ./Clusters/$1.clstrs ./Topics/$1.tpcs && cat ./Topics/$1.tpcs

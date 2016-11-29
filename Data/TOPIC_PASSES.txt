@@ -1,0 +1,61 @@
+Pass 1
+
+[(0, u'0.155*fix + 0.029*warn + 0.023*bug'), (1, u'0.139*fix + 0.030*typo + 0.020*leak')]
+[(0, u'0.022*use + 0.021*add + 0.015*function'), (1, u'0.026*make + 0.026*file + 0.024*updat')]
+
+Pass 2
+
+[(0, u'0.144*fix + 0.033*warn + 0.021*leak'), (1, u'0.150*fix + 0.029*typo + 0.023*bug')]
+[(0, u'0.019*use + 0.015*add + 0.014*file'), (1, u'0.033*updat + 0.026*submit + 0.024*pr')]
+
+pass 3
+
+[(0, u'0.040*fix + 0.034*submit + 0.030*pr'), (1, u'0.019*use + 0.014*make + 0.013*function')]
+[(0, u'0.063*updat + 0.032*make + 0.019*use'), (1, u'0.041*fix + 0.021*submit + 0.019*pr')]
+
+pass 4
+
+[(0, u'0.022*use + 0.014*function + 0.012*make'), (1, u'0.030*submit + 0.026*pr + 0.017*add')]
+[(0, u'0.082*fix + 0.049*updat + 0.027*add'), (1, u'0.031*fix + 0.018*make + 0.018*use')]
+
+pass 5
+
+[(0, u'0.166*fix + 0.031*warn + 0.019*leak'), (1, u'0.129*fix + 0.032*typo + 0.030*bug')]
+[(0, u'0.018*use + 0.017*make + 0.014*file'), (1, u'0.027*add + 0.026*submit + 0.025*support')]
+
+pass 6
+
+[(0, u'0.128*fix + 0.023*bug + 0.019*error'), (1, u'0.170*fix + 0.033*warn + 0.026*typo')]
+[(0, u'0.035*updat + 0.028*submit + 0.026*pr'), (1, u'0.018*use + 0.014*file + 0.013*add')]
+
+pass 7
+
+[(0, u'0.021*use + 0.014*function + 0.013*add'), (1, u'0.031*updat + 0.028*submit + 0.027*pr')]
+[(0, u'0.023*fix + 0.018*use + 0.015*make'), (1, u'0.111*fix + 0.032*add + 0.024*typo')]
+
+
+pass 8
+
+[(0, u'0.139*fix + 0.035*warn + 0.025*bug'), (1, u'0.154*fix + 0.028*typo + 0.017*leak')]
+[(0, u'0.034*updat + 0.028*submit + 0.026*pr'), (1, u'0.018*use + 0.015*add + 0.013*file')]
+
+pass 9
+
+[(0, u'0.131*fix + 0.026*typo + 0.018*code'), (1, u'0.167*fix + 0.032*warn + 0.020*leak')]
+[(0, u'0.029*updat + 0.024*submit + 0.022*pr'), (1, u'0.020*use + 0.014*function + 0.013*add')]
+
+
+pass 10
+
+[(0, u'0.051*fix + 0.029*submit + 0.025*pr'), (1, u'0.020*use + 0.016*add + 0.015*function')]
+[(0, u'0.055*make + 0.017*use + 0.012*function'), (1, u'0.051*updat + 0.030*fix + 0.024*pr')]
+
+pass 11
+
+[(0, u'0.021*use + 0.017*make + 0.014*chang'), (1, u'0.041*add + 0.029*submit + 0.027*pr')]
+[(0, u'0.099*fix + 0.023*typo + 0.023*updat'), (1, u'0.029*fix + 0.018*use + 0.013*function')]
+
+pass 12
+
+[(0, u'0.119*fix + 0.013*bug + 0.012*compil'), (1, u'0.171*fix + 0.024*warn + 0.021*typo')]
+[(0, u'0.018*use + 0.014*add + 0.013*make'), (1, u'0.036*updat + 0.029*submit + 0.027*pr')]

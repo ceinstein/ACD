@@ -1,0 +1,284 @@
+Fix enable-zlib no-comp
+Fix no-rc4
+Move declaration of i into blocks where it is used
+sctp requires dgram
+RT4660: BIO_METHODs should be const
+BIO_new etc. don't need a non-const BIO_METHOD This allows all the built-in method tables to live in .rodata
+Downcase VMS config names
+On VMS we downcase option names which means that config names are downcased as well so they need to be downcased in the target table to be found
+Just like bio_out bio_err needs the linebuffer filter on VMS
+Adds s2i function for ct_precert_poison X509 extension
+Allows CONF files for certificate requests to specify that a pre- certificate should be created (see RFC6962)
+Fix memory leak where fdlookup linked list is not freed during ASYNC_WAIT_CTX_free
+Fix no-ts with --strict-warnings
+Fix no-sock
+Misc fixes for no-sock
+Fix no-gost
+Configure had the wrong name for the no-gost option
+Don't use hardcoded values for types
+In for loop values introduce a dummy to protect against empty list
+In constructions such as 'for x in $(MAKEVAR); do ...' there's the possibility that $(MAKEVAR) is en empty value Some shells don't like that so introduce a dummy value that gets discarded:
+for x in dummy $(MAKEVAR); do if [ "$$x" = "dummy" ]; then continue; fi
+Closes
+Fix no-seed
+Fix compilation with --strict-warnings and no-seed
+Remove the no-rijndael option
+Rijndael is an old name for AES
+Fix no-scrypt
+Fix the evp tests when no-scrypt is used
+Skip the CMS tests if CMS is disabled
+This fixes the no-cms compile time option
+Fix no-dsa
+Misc fixes for no-dsa
+Build system: VC-WIN64I fixups
+Configurations/windows-makefile.tmpl: respect no-makedepend
+Windows build system: get uplink right
+config: fix off-by-centimeter-to-the-right typo
+Configurations/10-main.conf: freeze -std option in darwin*-ppc-cc
+RT#4422
+Remove mk1mf documentation
+Remove the remainder of util/mk1mf.pl and companion scripts
+This removes all scripts that deal with MINFO as well since that's only used by mk1mf
+Remove generation of ms/version32.rc from Configure use util/mkrc.pl
+utils/mkrc.pl was added a while ago as a better generator for the Windows DLL resource file Finalize the change by removing the ms/version32.rc generator from Configure and adding resource file support using mkrc.pl in Configurations/windows-makefile.pl
+Remove the mk1mf VC-WIN* builds and its supporting scripts
+The mk1mf build for the VC-WIN* targets is broken and the unified scheme works well enough so we clean out the old
+Fix ALPN - more fixes
+* Clear proposed along with selected before looking at ClientHello * Add test case for above * Clear NPN seen after selecting ALPN on server * Minor documentation updates
+Add a comment on dane_verify() logic
+Remove #error from include files
+Don't have #error statements in header files but instead wrap the contents of that file in #ifndef OPENSSL_NO_xxx This means it is now always safe to include the header file
+GH886: CONNECT should use HTTP/1.1
+By default you get 0.9 which isn't widely available But we use HTTP/1.0 for now Courtesy beusink@users.github.com
+Have makedepend output to stdout and redirect it
+This gives us better control of what files are produced
+ct_int.h only needed by crypto/ct
+Merge ct_int.h into ct_locl.h
+constify
+Move blake2_loclh to blake2 directory
+Fixed language
+Fixed a bunch of typos in the docs
+constify ECDSA_SIG_get0()
+PR#4436
+If the asm file to be compiled isn't generated leave the ext alone
+Closes
+make update
+Don't let 'generate' target depend on generated files act directly instead
+One of the 'generate' targets depended on $(SRCDIR)/apps/progs.h which depended on.. nothing This meant it never got regenerated once it existed regardless of need Of course we could have it depend on all the files checked to generate it but they also depend on progs.h so we'd end up getting cricular dependencies which makes make unhappy
+Furthermore and this applies for the other generated files having them as targets means that they may be regenerated on the fly in some cases and since they get written to the source tree this isn't such a good idea if that tree is read-only (which is a possible situation in an out-of-tree build)
+So we move all the actions to the 'generate' targets themselves thus making sure they get regenerated in a controlled manner and regardless of dependencies
+apps/progs.pl: add back the INCLUDE_FUNCTION_TABLE wrapper
+Revert "Ignore the generated apps/progs.h"
+This reverts commit 91056e72693b4ee8cb5339d9091871ffc3b6f776
+Revert "Generate apps/progs.h on the fly"
+This reverts commit 04e2a527379ad12ca512aef4e838f94af22d7f79
+Revert "Include progs.h directly in openssl.c instead of via apps.h"
+This reverts commit a45d7d5388c6774a484cff4af13f188240d3d50b
+GH36: Add casts to match the documentation
+Correct faulty L<> links in .pods
+Closes RT#4450
+Add a few more quotes for Windows (install_ssldirs)
+The command source are files not directories
+Therefore they should be concatenated with the source directory using catfile() not catdir()
+Replace sed command with perl
+Some implementations of sed require a newline before an ending '}' The easier method is to replace that sed command with the corresponding perl command
+Closes
+Clear the exit code from 'find' in 'make depend'
+Depending on what has been built so far all .d files may not be present and 'find' will exit with non-zero exit code This isn't a bother for us but may break make so clear the exit code with an added 'exit 0'
+Closes
+Shut find up about files not found
+Some of the files in $(DEPS) might not exist We don't need to know
+Don't free up EVP_MD_CTX
+Don't free up passed EVP_MD_CTX in ASN1_item_sign_ctx() This simplifies handling and retains compatiblity with previous behaviour
+Use the dependencies received in generatesrc()
+generatesrc() did already receive dependency information but never used it and never really needed to.. until now
+Ignore the generated apps/progs.h
+Generate apps/progs.h on the fly
+Include progs.h directly in openssl.c instead of via apps.h
+Make apps/progs.pl more flexible
+Make Configure write @disablables to configdata.pm and have apps/progs.pl use that data
+Correct the export list when writing configdata.pm
+Correct the check of files to depend on against known generated ones
+The check was erroneously inversed
+Don't perform tsa tests if configured "no-ts"
+Correct incorrect path
+In crypto buildinf.h depends on ../configdata.pm not ./configdata.pm
+Better 'make depend' mechanism
+Instead of relying on the '-nt' test operator which doesn't exist everywhere use find's '-newer' to find out if any of the known .d files is newer than Makefile
+Closes RT#4444
+make update
+Implement support for no-ts
+apps/progs.pl: more consistent output for digests
+Fix no-des
+Numerous fixes for no-des
+Fix no-dgram
+A few places in s_client needed some OPENSSL_NO_DTLS guards which fixes no-dgram
+Fix no-deprecated
+The no-deprecated build was failing because afalg was relying on a transitive include that does not exist in a no-deprecated build
+Fix no-cmac
+There were a couple of CMAC references without OPENSSL_NO_CMAC guards
+Add a test to see that signals are caught as failures
+Make OpenSSL::Test::run() sensitive to signals
+$? in perl gets the status value from wait(2) which is a word with the exit code in the upper half and the number of a raised signal in the lower half OpenSSL::Test::run() ignored the signal half up until now
+With this change we recalculate an exit code the same way the Unix shells do using this formula:
+($? & 0x7f) ? ($? & 0x7f)|0x80 : ($? >> 8);
+Remove more unused things
+Moved doc/standards.txt to the web
+Resolved unresolved symbols with no-hw
+Compiling on Windows with no-hw was resulting in unresolved symbols in the padlock engine
+Ensure that no-comp functions are flagged as such
+mkdef.pl was not detecting no-comp functions This updates the header file so that mkdef.pl detects that no-comp applies and the functions are marked accordingly
+Fix no-rc2 in the CMS test
+The CMS test uses some RC2 keys which should be skipped if the RC2 is disabled
+Mark OCB as an AEAD cipher
+OCB is AEAD capable but was not marked as such with the EVP_CIPH_FLAG_AEAD_CIPHER flag
+Ensure that memory allocated for the ticket is freed
+If a call to EVP_DecryptUpdate fails then a memory leak could occur Ensure that the memory is freed appropriately
+Issue reported by Guido Vranken
+Fix a potential double free in EVP_DigestInit_ex
+There is a potential double free in EVP_DigestInit_ex This is believed to be reached only as a result of programmer error - but we should fix it anyway
+Issue reported by Guido Vranken
+Fix build; CPP syntax error
+Update EVP_CIPHER_CTX_set_padding documentation
+Add note about when EVP_CIPHER_CTX_set_padding should be called
+README: small fixups
+Don't refer to INSTALL files that don't exist any more Make it clear that the libssl and libcrypto libraries may be named differently on different platforms
+Make picker thread and combine standard config helper functions
+Document them as well
+Remove Netware and OS/2
+Disallow --classic for Windows
+With all the config changes mk1mf is broken on Windows
+windows-makefile.tmpl: Stop keeping temporary files
+Add install targets for Windows
+On Windows we set INSTALLTOP to default as follows:
+PREFIX: %ProgramFiles(x86)%\OpenSSL OPENSSLDIR: %CommonProgramFiles(x86)%\SSL
+PREFIX: %ProgramW6432%\OpenSSL OPENSSLDIR: %CommonProgramW6432%\SSL
+Should those environment variables be missing the following is used as fallback:
+PREFIX: %ProgramFiles%\OpenSSL OPENSSLDIR: %CommonProgramFiles%\SSL
+Report TLS 1.0 as backwards-compatible TLSv1
+The TLSv1.0 form is retained for reporting the first protocol version that supports a given cupher
+Remove ultrix/mips support
+Remove support for Borland C++
+Borland C++ 4.5 is very old and our "support" for it is already non-existent we might as well remove it
+Use correct C format for keysets.pl
+Start documenting Configure internals
+This is a living document everyone is encouraged to add to it Implementation details as well as broader implementation philosophy has a place here
+I'm starting with documentation of the how conditions in build.info files are treated
+Added build.info debugging capability to Configure
+This is only enabled when the environment variable CONFIGURE_DEBUG_BUILDINFO is defined This will cause every line in every build.info file to be displayed along with the content of the skip stack before and after parsing This can be a very powerful tool to see that all conditions are working as expected
+Simplify define as we don't support MS-DOS anymore
+Don't define OPENSSL_ENGINES in test recipes do it in Makefiles instead
+In most builds we can assume that engines live in the build tree subdirectory "engines" This was hard coded into the tests that use the engine ossltest
+However that hard coding is tedious it would need to be done in every test recipe and it's an incorrect assumption in some cases
+This change has us play it safe and let the build files tell the testing framework where the engines are
+Have 'openssl version -a' output the default engines directory as well
+Bugfix: Encode the requested length in s_cb.c:hexencode()
+Sort cipher-list at runtime
+Reduces #ifdef complexity
+unix-Makefile template: use $(PERL) everywhere
+There was one spot that had hard-coded 'perl'
+Deal with DSA_SIG opaqueness
+Prepare for 1.1.0-pre5-dev
+Prepare for 1.1.0-pre4 release
+Some platforms provide getcontext() but it does not work
+Some platforms claim to be POSIX but their getcontext() implementation does not work Therefore we update the ASYNC_is_capable() function to test for this
+RT#4366
+When building DLLs hack the library name in the .def file
+util/mkdef.pl assumes it knows what the resulting library name will be Really it shouldn't but changing it will break classic native Windows builds so we leave it for now and change the LIBRARY line externally when needed instead
+DLL object files should not be built with /Zl"
+When building the DLLs we depend on the correct default C RTL info
+Appveyor - make sure to actually build "shared" in the shared configuration
+Fix up CHANGES
+- Remove duplicate entry - Add author for SSL_CIPHER query functions - Note HKDF support in CHANGES and NEWS
+[ci skip]
+We should use $SRCDIR in Makefiles
+Normally we always refer to source files relative to $SRCDIR in Makefiles However the reference to unix-Makefile.tmpl was using a fully expanded absolute path This can cause problems for Mingw
+Disable AFALG when cross-compiling
+We don't currently support cross-compiling of the afalg engine However we were failing to explicitly mark it as disabled during Configure leading to a failed build
+Fix a TLSProxy race condition
+TLSProxy starts s_server and specifies the number of client connects it should expect After that s_server is supposed to close down automatically However if another test is then run then TLSProxy will start a new instance of s_server If the previous instance hasn't closed down yet then the new instance can fail to bind to the socket
+poly1305/asm/poly1305-x86_64.pl: make it work with linux-x32
+On Windows page walking is known as __chkstk
+Explain *cough*-dows
+Make the perl dependency post-processor into just one line
+Make doesn't always treat multiline quoted strings as nicely as one would wish
+Not all shells understand !
+In unix-Makefile.tmpl this construction has been used a few times
+if ! something; then ..
+It seems though that some shells do not understand ! so these need to be changed
+General verify options to openssl ts
+This commit adds the general verify options of ocsp verify cms etc to the openssl timestamping app as suggested by Stephen N Henson in [openssl.org #4287] The conflicting "-policy" option of "openssl ts" has been renamed to "-tspolicy" Documentation and tests have been updated
+CAVE: This will break code which currently uses the "-policy" option
+Fix CRYPTO_THREAD_run_once return value checks
+Cygwin configs were missing thread_scheme settings add them
+Small typo
+OPENSSL_INIT_ONCE and OPENSSL_INIT_ONCE_STATIC_INIT are really CRYPTO_ONCE and CRYPTO_ONCE_STATIC_INIT
+static-engine is no longer an internal keyword remove it from %disabled
+Clarify NOTES.WIN
+Update and clarify ECDSA documentation
+Disable afalg when engine is disabled
+Also make it possible to disable afalg separately
+we still need to update config again
+Fix typo in manual missing ending '>'
+Travis: build tests in BUILDONLY mode
+config: fix HP-UX PA-RISC detection
+s390x assembly pack: 32-bit fixups
+build.info/Makefile.in: Itanium fixups
+engines/Makefile.in: some [older] shell complain about 'for i ;' but not if there is reference to empty variable
+Fix the init cleanup order
+There are internal dependencies between the various cleanup functions This re-orders things to try and get that right
+Add some missing cleanup calls to de-init
+OBJ_cleanup() doesn't always get called from EVP_cleanup() so needs to be explicitly called in de-init Also BIO_sock_cleanup() also needs to be called
+Fix freeze in config's interrupt trap with some shells
+With bash and zsh the trap on the 5 second read does respond but doesn't break out of the read What's worse is that it takes away the 5 second timer and therefore has the read hang indefinitely and (almost) unbreakable
+Having the trap do 'exit 0' after reseting the tty params has it break out of read and continue with the configuration
+Other shells do not appear to have the issue described here but neither does the extra 'exit 0' appear to harm them
+Enforce the demand for Perl 5.10.0 as a minimum
+Fix a few Configure errors
+Document X509_get_serialNumber and X509_set_serialNumber
+Add EVP_PKEY documentation
+Document EVP_PKEY_id() and EVP_PKEY_base_id()
+Change an function macro for ERR match the function it's used in
+Complete incomplete makefile variable referenses
+A couple of '$(PERLASM_SCHEM' had sneaked in
+Collect the names of generated files and clean them away at target clean:
+Add $(LIB_CFLAGS) for any build.info generator that uses $(CFLAGS)
+The reason to do so is that some of the generators detect PIC flags like -fPIC and -KPIC and those are normally delivered in LD_CFLAGS
+Use single quotes rather than double quotes when needed
+When passing down values to Makefile.shared do so with single quotes as much as possible to avoid having the shell create a mess of quotes
+Harmonize Unix Makefile template with Windows dito
+The variable SHARED_CFLAGS and SHARD_LDFLAGS were used in the Unix template because they normally contain options used when building "shared" The Windows template on the other hand uses LIB_CFLAGS to express the intended use of those flags rather than their content The Windows template still used SHARED_LDFLAGS which seems inconsistent
+To harmonize the two any SHARED_CFLAGS gets renamed to LIB_CFLAGS and SHARED_LDFLAGS to LIB_LDFLAGS That makes the intent consistent along with BIN_{C,LD}FLAGS and DSO_{C,LD}FLAGS
+Finally make sure to pass down $(LIB_CFLAGS) or $(DSO_CFLAGS) along with $(CFLAGS) when using Makefile.shared
+Fix memory leak in library deinit
+ENGINE_cleanup calls CRYPTO_free_ex_data and therefore CRYPTO_cleanup_all_ex_data - which cleans up the method pointers - must run after ENGINE_cleanup
+Additionally don't needlessly initialize the EX_CALLBACKS stack during e.g CRYPTO_free_ex_data The only time this is actually needed is when reserving the first ex data index Specifically since sk_num returns -1 on NULL input the rest of the code already handles a NULL method stack correctly
+Add doc on when to use SCT callback
+With help from Viktor
+Workaround for false -Warray-bounds in Travis
+ccache + clang produces a false strcmp warning see https://llvm.org/bugs/show_bug.cgi?id=20144
+Since this only happens with ccache and --strict-warnings and only with certain versions of glibc / clang disabling ccache is a reasonable short-term workaround
+Fix no-comp build
+Fix build break; add function declaration
+When creating directory specs use srctop_dir rather than srctop_file
+While insignificant on Unix like systems this is significant on systems like VMS
+Avoid sed for dependency post-processing
+It turns out that different sed implementations treat -i differently to cause issues make it simpler by avoiding it entirely and give perl the trust to be consistent enough
+Because bn_expand2 is declared non-static it must not be static
+That doesn't change even to make a dummy to hide its unavailability
+Remove some dead code from 1999
+Don't clobber the last error
+On Windows we call WSAGetLastError() to find out the last error that happened on a socket operation We use this to find out whether we can retry the operation or not You are supposed to call this immediately however in a couple of places we logged an error first This can end up making other Windows system calls to get the thread local error state Sometimes that can clobber the error code so if you call WSAGetLastError() later on you get a spurious response and the socket operation looks like a fatal error
+Really we shouldn't be logging an error anyway if its a retryable issue Otherwise we could end up with stale errors on the error queue
+removed extra define
+verified that build succeeds without the extra define
+Fix no-blake2 for Windows classic build
+Fix no-blake2 for Windows classic build
+make update
+Make X509_SIG opaque
+Some sed implementations are not greedy enough use perl instead
+The issue is demonstrated as follows:
+On Linux:
+$ echo ': foo.h /usr/include/stddef.h bar.h' | sed -e 's/ \/\(\\.\|[^ ]\)*//g' : foo.h bar.h
+On MacOS X:
+$ echo ': foo.h /usr/include/stddef.h bar.h' | sed -e 's/ \/\(\\.\|[^ ]\)*//g' : foo.husr/include/stddef.h bar.h

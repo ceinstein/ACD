@@ -1,0 +1,5 @@
+4
+[(0, u'0.215*rhinos + 0.130*often + 0.130*interact'), (1, u'0.243*rhinos + 0.103*ungulates + 0.103*toed')]
+[(0, u'0.219*cats + 0.210*internet + 0.210*popular'), (1, u'0.224*cats + 0.137*like + 0.137*laser')]
+[(0, u'0.227*dogs + 0.136*sizes + 0.136*come'), (1, u'0.214*dogs + 0.211*kept + 0.211*pets')]
+[(0, u'0.216*bears + 0.210*salmon + 0.210*eat'), (1, u'0.269*bears + 0.192*large + 0.115*can')]
