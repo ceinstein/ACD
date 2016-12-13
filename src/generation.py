@@ -77,14 +77,14 @@ def vectorizeLine(dictionary, entry):
 #Vectorizes a single log message
 #Returns the normalized vector
 def vectorizeSingle(dictionary, entry):
-	tokenizer = RegexpTokenizer(r'\w+')
-	en_stop = get_stop_words('en')
-	stemmer = PorterStemmer()
-	tokens = tokenizer.tokenize(entry.decode('utf-8').lower()) #Tokenizes the line
-	stop_tokens = [i for i in tokens if not i in en_stop] #Removes common words
-	stem_tokens = [i for i in tokens if not i in en_stop and i.isalnum()] #Stems each word
-	entry = [i for i in stem_tokens if len(i) > 1] #Removes non-alphanumeric words and single letter words
-	print entry
+	#tokenizer = RegexpTokenizer(r'\w+')
+	#en_stop = get_stop_words('en')
+	#stemmer = PorterStemmer()
+	#tokens = tokenizer.tokenize(entry.decode('utf-8').lower()) #Tokenizes the line
+	#stop_tokens = [i for i in tokens if not i in en_stop] #Removes common words
+	#stem_tokens = [i for i in tokens if not i in en_stop and i.isalnum()] #Stems each word
+	#entry = [i for i in stem_tokens if len(i) > 1] #Removes non-alphanumeric words and single letter words
+	#print entry
 	vec = [0.0] * len(dictionary)
 	for word in entry:
 		if word in dictionary:
@@ -221,7 +221,7 @@ def topicModel(log, clusters):
 	return topics
 
 #Prints out the topics for all clusters
-def graphTopics(log, clusters):
+def generateTopics(log, clusters):
 	topics = []
 	for cluster in clusters:
 		if len(cluster) > 0:
@@ -301,7 +301,7 @@ def ACD(log, logVecs):
 	avgClusters = []
 	logLength = len(logVecs)
 	avgLength = 0
-	THRESHOLD = math.pi / 2.3
+	THRESHOLD = math.pi / 5
 	for i in range(logLength): #Cycles through the messages in the log
 		found = 0
 		for j in range(avgLength): #Cycles through the averages
@@ -387,11 +387,12 @@ def clusterMatch(entry, log, logVecs, clusters, avgClusters):
 			clusterIndex = j
 
 	if clusterIndex != -1:
-		print 'This new message is closest to cluster', clusterIndex,
-		print 'This cluster contains:'
-		print clusterIndex, len(clusters), clusters
-		print len(avgClusters)
-		printCluster(log, clusters[clusterIndex])
+		pass
+		#print 'This new message is closest to cluster', clusterIndex,
+		#print 'This cluster contains:'
+		#print clusterIndex, len(clusters), clusters
+		#print len(avgClusters)
+		#printCluster(log, clusters[clusterIndex])
 	else:
 		print 'This entry does not match any clusters!'
 
@@ -455,9 +456,37 @@ if __name__ == "__main__":
 	dictionary = generateDictionary(log)
 
 	#Sets the matrix
-	#matrix = generateMatrix(dictionary, len(log), log)
-	#matrix = normalize(matrix)
-	CFH.saveMatrix(matrix, sys.argv[2])
+	#matrix = generateMatrix(log, dictionary, len(log))
+	matrix = CFH.loadMatrix(sys.argv[2])
+	clusters, avgClusters = ACD(log, matrix)
+	print clusters, len(clusters), len(avgClusters)
+	#topics = generateTopics(log, clusters)
+	#print topics
+	log2 = CFH.loadLog(sys.argv[3])
 
-	GDACD(sys.argv[2], sys.argv[3], 3)
+	newClusters = [[] for x in range(len(clusters))]
+	linear = []
+	for i in range(len(log2)):
+		#print log2[i]
+		index = clusterMatch(log2[i], log, matrix, clusters, avgClusters)
+		linear.append(index)
+		newClusters[index].append(i)
+	#matrix = normalize(matrix)
+	#print newClusters
+	CFH.saveClusters(newClusters, "./Clusters/newClusters.clstrs")
+	
+	file = open(sys.argv[3])
+	fileO = open(sys.argv[4], 'w')
+	count = 0
+	for line in file:
+		if(linear[count] == 0):
+			fileO.write("NOT BUG:" + str(line))
+		else:
+			fileO.write("BUG:" + str(line))
+		count += 1
+	
+	#CFH.saveMatrix(matrix, sys.argv[2])
+	
+
+	#GDACD(sys.argv[2], sys.argv[3], 3)
 	

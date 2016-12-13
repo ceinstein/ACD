@@ -84,7 +84,7 @@ if __name__ == "__main__":
 			CFH.saveMatrix(matrixFile, MATRIX)
 			gen.GDACD(matrixFile, clusterFile, THREADS)
 			CLUSTERS = CFH.loadClusters(clusterFile)
-			TOPICS = gen.graphTopics(LOG, CLUSTERS)
+			TOPICS = gen.generateTopics(LOG, CLUSTERS)
 			CFH.saveTopics(topicFile, TOPICS)
 		except Exception as E:
 			print 'Need a log file for the pipeline'
