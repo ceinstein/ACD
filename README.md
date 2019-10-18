@@ -1,4 +1,13 @@
 # ACD - Automatic Cluster Detection
+
+## Publication
+
+
+Craig Einstein and Peter Chin "Automatic similarity detection and
+clustering of data", Proc. SPIE 10185, Cyber Sensing 2017, 101850K (May 22,
+2017); doi:10.1117/12.2267844; http://dx.doi.org/10.1117/12.2267844
+
+
 ## Installations
 
 To run the ACD algorith python 2.7 and Go must be installed
